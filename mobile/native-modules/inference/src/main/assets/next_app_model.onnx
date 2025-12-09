@@ -1,0 +1,3 @@
+Placeholder ONNX model file for debug builds.
+
+This is NOT a valid ONNX model — replace with a real exported model for device testing.

@@ -1,5 +1,18 @@
 package com.lifetwin.mlp.automation
 
+// Lightweight stub for AutomationManager; implement concrete automation wiring
+// (WorkManager, AccessibilityService integration) when ready to develop on-device.
+class AutomationManager {
+    fun start() {
+        // TODO: implement automation startup
+    }
+
+    fun stop() {
+        // TODO: implement automation shutdown
+    }
+}
+package com.lifetwin.mlp.automation
+
 // Kotlin-side hooks for executing automations such as toggling DND,
 // posting suggestion notifications, or blocking apps (where allowed).
 

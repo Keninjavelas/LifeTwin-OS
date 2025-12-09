@@ -13,6 +13,9 @@ export type RootStackParamList = {
   AppUsageSummary: undefined;
   Insights: undefined;
   Settings: undefined;
+  ModelDebug: undefined;
+  Automation: undefined;
+  KeystoreDebug: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -28,6 +31,9 @@ const App = () => {
         <Stack.Screen name="AppUsageSummary" component={AppUsageSummaryScreen} />
         <Stack.Screen name="Insights" component={InsightsScreen} />
         <Stack.Screen name="Settings" component={SettingsScreen} />
+        <Stack.Screen name="ModelDebug" component={require('@screens/ModelDebugScreen').default} />
+        <Stack.Screen name="Automation" component={require('@screens/AutomationScreen').default} />
+        <Stack.Screen name="KeystoreDebug" component={require('@screens/KeystoreDebugScreen').default} />
       </Stack.Navigator>
     </NavigationContainer>
   );

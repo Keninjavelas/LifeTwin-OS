@@ -106,6 +106,41 @@ timestamp validation.
 
 - Tests
   - `tests/test_placeholders.md` — guide on where to add tests for mobile, backend, ML, and simulation.
+  - Python tests (pytest): `test_simulation.py`, `test_encrypted_storage.py` — passing.
+  - JS tests (Jest): smoke tests for `NativeInference`, `Automation`, `Keystore`, and `E2EE` wrappers.
+
+## 8. CI/CD & Build Automation
+
+- GitHub Actions workflows:
+  - `.github/workflows/python-tests.yml` — runs Python tests (pytest) on push/PR.
+  - `.github/workflows/mobile-js-tests.yml` — runs mobile Jest tests on push/PR.
+  - `.github/workflows/android-build-manual.yml` — manual workflow for Android builds with optional AAR artifact fetch.
+
+## 9. Latest Improvements (Recent Iteration)
+
+- **Reflective ONNX session loader** (`mobile/native-modules/inference/NativeModelLoader.kt`):
+  - Detects ONNX Runtime at runtime using reflection.
+  - Stores sessions, unloads them, and performs best-effort inference without compile-time dependency.
+  - Logs detailed status (classes detected, session created, inference success/failure).
+
+- **Keystore envelope helpers** (`mobile/native-modules/security/KeystoreModule.kt`):
+  - `generateWrappedDataKey()` — creates AES data key, wraps it with AndroidKeyStore RSA key, returns both wrapped key and IV.
+  - `unwrapDataKey(wrappedKey, iv)` — unwraps the data key using the private key from Keystore.
+  - JS E2EE wrapper (`mobile/app/src/services/e2eeService.ts`) with Jest test.
+
+- **Debug helpers**:
+  - `copyDebugOnnxAsset()` in NativeModelLoader to copy ONNX file from assets to internal storage for testing.
+  - Debug screens in RN app: `ModelStatusScreen`, `AutomationDebugScreen`, `KeystoreDebugScreen`.
+
+- **Backend improvements**:
+  - Simulation routes mounted and working.
+  - JSON serialization for datetime fields fixed (ISO format) in export summaries endpoint.
+  - Tests passing (5 passed, 1 skipped).
+
+- **ML artifact writers**:
+  - `ml/exporters/model_writer.py`, `metadata_writer.py`, `metrics_writer.py`, `vocab_writer.py`.
+  - ONNX export helpers in `ml/exporters/onnx_helpers.py`.
+  - Smoke training flow validated with artifact generation.
 
 ---
 

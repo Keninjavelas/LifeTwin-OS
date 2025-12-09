@@ -1,6 +1,14 @@
-# LifeTwin OS — Remaining Tasks
+# LifeTwin OS — Task Tracker (current iteration)
 
-This document lists the key tasks needed to turn the current scaffolding into a fully functional system.
+This file summarizes what’s done in this iteration and what remains to ship a production-ready release.
+
+## Completed in this iteration (highlights)
+
+- CI: Python + mobile JS workflows; manual Android build workflow (gated, optional AAR fetch).
+- Backend: simulation routes mounted; export summaries JSON serialization fixed (datetimes → ISO); tests green.
+- ML: artifact writers (model/meta/metrics/vocab), ONNX export helpers, RL/LLM smoke stubs; pytest passing.
+- Native (Android): reflective ONNX detection/session store + unload + best-effort run; automation and keystore stubs; debug ONNX asset copy helper.
+- RN app: debug screens for Model status, Automation, Keystore; JS wrappers + Jest smoke tests (NativeInference/Automation/Keystore/E2EE).
 
 ## 1. Data Collection & Local Intelligence
 

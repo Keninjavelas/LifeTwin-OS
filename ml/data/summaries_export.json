@@ -1,0 +1,15 @@
+{
+  "device_id": "dev1",
+  "summaries": [
+    {
+      "timestamp": "2020-01-01T00:00:00+00:00",
+      "total_screen_time": 120,
+      "top_apps": [
+        "com.example.app"
+      ],
+      "most_common_hour": 14,
+      "predicted_next_app": null,
+      "notification_count": 3
+    }
+  ]
+}

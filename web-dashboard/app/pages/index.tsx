@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
 
 interface DailySummary {
   timestamp: string;
@@ -11,9 +12,10 @@ interface DailySummary {
 
 const DashboardPage: React.FC = () => {
   const [summaries, setSummaries] = useState<DailySummary[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // MLP: simple fetch from local backend at localhost:8000
     const fetchData = async () => {
       try {
         const loginRes = await fetch("http://localhost:8000/auth/login", {
@@ -31,6 +33,9 @@ const DashboardPage: React.FC = () => {
         setSummaries(data.summaries ?? []);
       } catch (e) {
         console.error(e);
+        setError("Failed to load summaries.");
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();
@@ -39,19 +44,53 @@ const DashboardPage: React.FC = () => {
   const latest = summaries[summaries.length - 1];
 
   return (
-    <main style={{ padding: 24, fontFamily: "system-ui, sans-serif" }}>
-      <h1>LifeTwin OS — MLP Dashboard</h1>
-      {latest ? (
+    <main style={{ padding: 24, fontFamily: "system-ui, sans-serif", maxWidth: 900, margin: "0 auto" }}>
+      <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+        <div>
+          <h1 style={{ margin: 0 }}>LifeTwin OS — MLP Dashboard</h1>
+          <p style={{ margin: 0, color: "#6B7280" }}>Overview of your device behavior and predictions</p>
+        </div>
+        <nav style={{ display: "flex", gap: 12, fontSize: 14 }}>
+          <Link href="/">Home</Link>
+          <Link href="/timeline">Timeline</Link>
+          <Link href="/analytics/trends">Trends</Link>
+          <Link href="/analytics/heatmap">Heatmap</Link>
+          <Link href="/analytics/simulate">Simulate</Link>
+          <Link href="/settings">Settings</Link>
+        </nav>
+      </header>
+
+      {loading && <p>Loading summaries…</p>}
+      {error && <p style={{ color: "#DC2626" }}>{error}</p>}
+
+      {!loading && !latest && !error && <p>No summaries synced yet.</p>}
+
+      {latest && (
         <section style={{ marginTop: 16 }}>
           <h2>Today</h2>
-          <p>Total screen time: {latest.total_screen_time} min</p>
-          <p>Top apps: {latest.top_apps.join(", ")}</p>
-          <p>Notifications: {latest.notification_count}</p>
-          <p>Peak usage hour: {latest.most_common_hour}:00</p>
-          <p>Predicted next app: {latest.predicted_next_app ?? "(none)"}</p>
+          <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
+            <div style={{ padding: 12, borderRadius: 8, background: "#0F172A", color: "#E5E7EB", minWidth: 200 }}>
+              <div style={{ fontSize: 12, color: "#9CA3AF" }}>Total screen time</div>
+              <div style={{ fontSize: 20, fontWeight: 600 }}>{latest.total_screen_time} min</div>
+            </div>
+            <div style={{ padding: 12, borderRadius: 8, background: "#0F172A", color: "#E5E7EB", minWidth: 200 }}>
+              <div style={{ fontSize: 12, color: "#9CA3AF" }}>Top apps</div>
+              <div>{latest.top_apps.join(", ")}</div>
+            </div>
+            <div style={{ padding: 12, borderRadius: 8, background: "#0F172A", color: "#E5E7EB", minWidth: 200 }}>
+              <div style={{ fontSize: 12, color: "#9CA3AF" }}>Notifications</div>
+              <div>{latest.notification_count}</div>
+            </div>
+            <div style={{ padding: 12, borderRadius: 8, background: "#0F172A", color: "#E5E7EB", minWidth: 200 }}>
+              <div style={{ fontSize: 12, color: "#9CA3AF" }}>Peak usage hour</div>
+              <div>{latest.most_common_hour}:00</div>
+            </div>
+            <div style={{ padding: 12, borderRadius: 8, background: "#0F172A", color: "#E5E7EB", minWidth: 200 }}>
+              <div style={{ fontSize: 12, color: "#9CA3AF" }}>Predicted next app</div>
+              <div>{latest.predicted_next_app ?? "(none)"}</div>
+            </div>
+          </div>
         </section>
-      ) : (
-        <p>No summaries synced yet.</p>
       )}
 
       <section style={{ marginTop: 32 }}>

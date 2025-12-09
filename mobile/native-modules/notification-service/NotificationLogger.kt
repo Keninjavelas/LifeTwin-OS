@@ -6,14 +6,31 @@ package com.lifetwin.mlp.notifications
 
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
+import com.lifetwin.mlp.db.AppDatabase
+import com.lifetwin.mlp.db.AppEventEntity
+import com.lifetwin.mlp.db.DBHelper
 
 class NotificationLogger : NotificationListenerService() {
 
     override fun onNotificationPosted(sbn: StatusBarNotification) {
-        // TODO: persist or forward notification metadata (title, package, category)
+        DBHelper.insertEventAsync(
+            applicationContext,
+            AppEventEntity(
+                timestamp = System.currentTimeMillis(),
+                type = "notification",
+                packageName = sbn.packageName
+            )
+        )
     }
 
     override fun onNotificationRemoved(sbn: StatusBarNotification) {
-        // TODO: record dismissal events for behavior modeling
+        DBHelper.insertEventAsync(
+            applicationContext,
+            AppEventEntity(
+                timestamp = System.currentTimeMillis(),
+                type = "notification_removed",
+                packageName = sbn.packageName
+            )
+        )
     }
 }

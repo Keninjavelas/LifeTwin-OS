@@ -1,14 +1,23 @@
 import React from "react";
-import { View, Text, Button } from "react-native";
+import { View, Text, Button, Alert } from "react-native";
+import { NativeCollectors } from "@services/nativeCollectors";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../App";
 
 export type PermissionsOnboardingProps = NativeStackScreenProps<RootStackParamList, "PermissionsOnboarding">;
 
 const PermissionsOnboardingScreen: React.FC<PermissionsOnboardingProps> = ({ navigation }) => {
-  const handleGrant = () => {
-    // TODO: call into nativeCollectors.requestAllPermissions()
-    navigation.replace("Home");
+  const handleGrant = async () => {
+    try {
+      const ok = await NativeCollectors.requestAllPermissions();
+      if (ok) {
+        navigation.replace("Home");
+      } else {
+        Alert.alert("Permissions required", "Please enable the requested permissions in system settings.");
+      }
+    } catch (e) {
+      Alert.alert("Error", "Failed to request permissions. Please try again.");
+    }
   };
 
   return (

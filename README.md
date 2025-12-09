@@ -1,16 +1,29 @@
 # LifeTwin OS
 
-LifeTwin OS is a privacy‑first, on‑device‑first "personal digital twin" system. It learns from your device behavior,
-builds simple predictive models, and presents insights through a mobile app and a web dashboard, with a lightweight
-backend for sync.
+LifeTwin OS is a privacy‑first, on‑device‑first "personal digital twin". It learns from device behavior,
+builds predictive models, and surfaces insights via a mobile app and web dashboard, with a lightweight backend for sync.
 
-This repository currently implements:
+## Current state (this iteration)
 
-- A **Minimum Lovable Product (MLP)** mobile app skeleton (React Native + TypeScript).
-- A minimal **FastAPI backend** for daily summary sync.
-- A minimal **Next.js web dashboard** for viewing summaries.
-- **Scaffolding** for future features: richer data collection, ML models (sequence + time‑series), simulation engine,
-  rule‑based and RL automation, on‑device LLM summaries, and security/E2EE.
+- React Native mobile app skeleton with debug screens for model status, automation, and keystore.
+- FastAPI backend with simulation routes and summary export; JSON export fixed for datetime serialization.
+- Python ML pipeline with artifact writers (model/meta/metrics/vocab), ONNX helpers, RL/LLM smoke stubs, and tests.
+- Android native stubs for inference (reflective ONNX detection), automation, and keystore; JS wrappers + Jest smoke tests.
+- CI workflows for Python + mobile JS; manual Android build workflow (gated) and runbooks/QA checklist.
+
+## Latest improvements
+
+- Added reflective ONNX session handling with session store, unload, and heuristic run path in `NativeModelLoader` and exposed via RN module.
+- Added Android Keystore envelope helpers plus JS E2EE wrapper and Jest smoke test.
+- Added debug ONNX asset and asset-to-filesDir copy to simplify local Android debug builds.
+- Added manual Android build workflow (workflow_dispatch) with optional AAR fetch.
+- Strengthened README quick-start and test guidance; cleaned pycache artifacts.
+
+## What remains (high level)
+
+- Ship real on‑device runtime (ONNX/Torch) and wire native inference end‑to‑end.
+- Device/emulator validation for automation + E2EE flows; add instrumentation tests.
+- Advanced ML (production RL/LLM, quantization) and full release QA/packaging.
 
 ---
 
@@ -150,3 +163,56 @@ production projects yet. The intended usage is:
    real models, collectors, security features, and automation logic.
 
 See `completed.md` and `tasks_left.md` for a concise view of what is already in place and what remains to be built.
+
+## Quick start (local)
+
+### Backend (FastAPI)
+
+```bash
+cd backend/fastapi
+python -m venv .venv
+source .venv/Scripts/activate  # Windows Bash
+pip install -r requirements.txt
+uvicorn main:app --reload --port 8000
+```
+
+### ML utilities (optional)
+
+```bash
+cd ml
+python -m venv .venv
+source .venv/Scripts/activate
+pip install -r requirements.txt
+PYTHONPATH="$PWD" pytest -q
+```
+
+### Mobile app (JS layer)
+
+- The repo contains the RN app source under `mobile/app/`; initialize a React Native project and copy the source or wire the native modules accordingly.
+- Jest smoke tests live in `mobile/app/__tests__/`; run with `npm test` or `yarn test` inside your RN project.
+
+### Android native modules
+
+- Optional ONNX/Torch AARs are not bundled. See `mobile/native-modules/inference/README.md` and `ONNX_GRADLE_HINT.md` for guidance.
+- A manual Android CI workflow is provided at `.github/workflows/android-build.yml` (gated; requires AAR URL/inputs).
+
+### Web dashboard (Next.js)
+
+```bash
+cd web-dashboard/app
+npm install
+npm run dev
+```
+
+## Tests
+
+- Python: `PYTHONPATH="$PWD" pytest -q` from repo root (already passing in this iteration: 5 passed, 1 skipped).
+- JS (mobile app): run Jest inside your RN project; smoke tests for NativeInference, Automation, Keystore, and E2EE wrappers are included.
+- Android: no automated device tests are run here; use the manual workflow or Android Studio for instrumentation.
+
+## Documentation and runbooks
+
+- QA checklist: `RUNBOOKS/QA_CHECKLIST.md`
+- Retrain/deploy: `RUNBOOKS/RETRAIN_AND_DEPLOY.md`
+- Simulation/API notes: `simulation_engine/api/simulation_api.py`
+- ML export helpers: `ml/utils/save_artifact.py` and training scripts under `ml/`

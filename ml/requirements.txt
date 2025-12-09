@@ -1,0 +1,7 @@
+torch
+onnxruntime
+onnxruntime-tools
+numpy
+pandas
+scikit-learn
+joblib

@@ -1,11 +1,11 @@
 import React from "react";
-import { View, Text, Switch } from "react-native";
+import { View, Text, Switch, Button } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../App";
 
 export type SettingsProps = NativeStackScreenProps<RootStackParamList, "Settings">;
 
-const SettingsScreen: React.FC<SettingsProps> = () => {
+const SettingsScreen: React.FC<SettingsProps> = ({ navigation }) => {
   const [syncEnabled, setSyncEnabled] = React.useState(true);
 
   return (
@@ -15,6 +15,11 @@ const SettingsScreen: React.FC<SettingsProps> = () => {
         <Text style={{ flex: 1 }}>Enable summary sync</Text>
         <Switch value={syncEnabled} onValueChange={setSyncEnabled} />
       </View>
+
+      <View style={{ marginBottom: 12 }}>
+        <Button title="Open Model Debug" onPress={() => navigation.navigate("ModelDebug") } />
+      </View>
+
       <Text style={{ marginTop: 24, fontWeight: "bold" }}>About</Text>
       <Text>LifeTwin OS MLP — local-first event logging with simple predictions.</Text>
     </View>

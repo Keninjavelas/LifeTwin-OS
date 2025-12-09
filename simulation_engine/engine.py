@@ -6,6 +6,7 @@ Supports simple scenarios like changing bedtime or social app usage to see effec
 from typing import Dict
 
 from ml.time_series_models.forecast_twin import forecast_next_hours  # type: ignore
+from simulation_engine.model_loader import load_time_series_model
 
 
 def run_scenario(base_history: Dict, bedtime_shift_hours: int = 0, social_usage_delta_min: int = 0) -> Dict:
@@ -18,8 +19,11 @@ def run_scenario(base_history: Dict, bedtime_shift_hours: int = 0, social_usage_
     adjusted["bedtime_shift_hours"] = bedtime_shift_hours
     adjusted["social_usage_delta_min"] = social_usage_delta_min
 
-    forecast = forecast_next_hours(adjusted)
+    # Try to preload a trained twin model if available and pass it to the forecasting
+    # function so simulations use the trained model when present.
+    model_obj = load_time_series_model()
+    forecast = forecast_next_hours(adjusted, model_obj=model_obj)
     return {
-        "base": forecast_next_hours(base_history),
+        "base": forecast_next_hours(base_history, model_obj=model_obj),
         "simulated": forecast,
     }
