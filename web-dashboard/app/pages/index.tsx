@@ -55,7 +55,7 @@ const DashboardPage: React.FC = () => {
           <Link href="/timeline">Timeline</Link>
           <Link href="/analytics/trends">Trends</Link>
           <Link href="/analytics/heatmap">Heatmap</Link>
-          <Link href="/analytics/simulate">Simulate</Link>
+          <Link href="/simulation">Simulation</Link>
           <Link href="/settings">Settings</Link>
         </nav>
       </header>

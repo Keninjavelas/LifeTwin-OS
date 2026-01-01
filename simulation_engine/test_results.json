@@ -1,0 +1,96 @@
+{
+  "baseline": {
+    "hours_ahead": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "energy": [
+      0.8,
+      0.7,
+      0.6,
+      0.5
+    ],
+    "focus": [
+      0.7,
+      0.65,
+      0.6,
+      0.55
+    ],
+    "mood": [
+      0.75,
+      0.7,
+      0.68,
+      0.65
+    ],
+    "scenario_type": "baseline",
+    "generated_at": "2025-12-29T14:53:03.214594Z"
+  },
+  "simulated": {
+    "hours_ahead": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "energy": [
+      0.9,
+      0.7999999999999999,
+      0.7,
+      0.6
+    ],
+    "focus": [
+      0.83,
+      0.78,
+      0.73,
+      0.68
+    ],
+    "mood": [
+      0.72,
+      0.6699999999999999,
+      0.65,
+      0.62
+    ],
+    "scenario_type": "simulated",
+    "generated_at": "2025-12-29T14:53:03.216598Z"
+  },
+  "impact_analysis": {
+    "energy": {
+      "average_change": 0.1,
+      "percent_change": 15.4,
+      "trend_change": 0.0,
+      "improvement": "True",
+      "degradation": "False"
+    },
+    "focus": {
+      "average_change": 0.13,
+      "percent_change": 20.8,
+      "trend_change": 0.0,
+      "improvement": "True",
+      "degradation": "False"
+    },
+    "mood": {
+      "average_change": -0.03,
+      "percent_change": -4.3,
+      "trend_change": 0.0,
+      "improvement": "False",
+      "degradation": "True"
+    },
+    "overall": {
+      "score": 0.067,
+      "interpretation": "Moderately positive impact",
+      "recommendation": "Recommended: This scenario improves energy, focus"
+    }
+  },
+  "scenario_params": {
+    "social_usage_delta_min": -30,
+    "exercise_delta_min": 20,
+    "screen_break_frequency": 2
+  },
+  "model_info": {
+    "model_available": false,
+    "model_type": "unknown",
+    "prediction_confidence": 0.3
+  }
+}
